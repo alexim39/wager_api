@@ -2,7 +2,6 @@ const { LayModel, LayValidator } = require('../../models/lay');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/config');
 const LayClass = require('./lay.class');
-//const Deposit = require('./../deposit/deposit');
 const Balance = require('./../balance');
 
 module.exports = class Lay extends LayClass  {
@@ -26,6 +25,7 @@ module.exports = class Lay extends LayClass  {
 
                 // laying from deposit
                 if (req.body.layedFrom === 'deposit') {
+                    
                     const BalanceClass = new Balance();
                     const balancePromise = BalanceClass.accountBalance(req.body.userId);
 
@@ -116,7 +116,20 @@ module.exports = class Lay extends LayClass  {
 
             })
         } catch (error) {
-            return res.status(500).json({ msg: `User access process failed`, code: 500 });
+            return res.status(500).json({ msg: `Access process failed`, code: 500 });
+        }
+    }
+
+    static async getLays(req, res) {
+        try {
+            jwt.verify(req.token, config.server.token);
+
+            const lays = await LayModel.find({userId: req.params.userId});
+            if (!lays) return res.status(404).json({ msg: `No lay found`, code: 404 });
+             return res.status(200).json({ msg: `Lays found`, code: 200, obj: lays });
+
+        } catch (error) {
+            return res.status(500).json({ msg: `Access process failed`, code: 500 });
         }
     }
 

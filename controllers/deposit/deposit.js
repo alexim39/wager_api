@@ -39,25 +39,6 @@ module.exports = class Deposit extends DepositClass {
             if (!deposit) return res.status(404).json({ msg: `Deposit process failed`, code: 404 });
             return res.status(200).json({ msg: `Deposit successful`, code: 200, obj: deposit }); 
 
-            // check if user already exist
-            /* const user = await BalanceModel.findById(req.body.userId);
-            if (user.userId) { // first time deposit
-
-                const currentBalance  = +req.body.amount + +user.balance // + cast values into numbers
-                console.log(currentBalance)
-                // update the balance value
-                const balance = await BalanceModel.findByIdAndUpdate(req.body.userId, { balance: currentBalance });
-                if (!balance) return  res.status(404).json({ msg: `Error while updating deposit balance`, code: 404 });
-                return res.status(200).json({ msg: `Deposit successful`, code: 200, obj: balance });
-                
-            } else {
-                const initBal = await new BalanceModel({ 
-                    userId: req.body.userId, 
-                    balance: req.body.amount 
-                }).save();
-                if (!initBal) return  res.status(404).json({ msg: `Error while updating deposit balance`, code: 404 });
-                return res.status(200).json({ msg: `Deposit successful`, code: 200, obj: initBal }); 
-            } */
         } catch (error) {
             return res.status(500).json({ msg: `Deposit process failed`, code: 500 });
         }

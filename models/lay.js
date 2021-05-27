@@ -34,7 +34,7 @@ exports.LayModel = new mongoose.model('Lay', new mongoose.Schema({
         type: String,
         required: true
     },
-    layDate: {
+    start: {
         type: Date,
         default: Date.now
     }
@@ -49,7 +49,7 @@ exports.LayValidator = (layObj) => {
         period: yup.number().required('Lay period is requred'),
         transactionId: yup.number().required('Transaction ID is required'),
         plan: yup.string().required('Plan is required'),
-        layDate: yup.date().required('Transaction date is required'),
+        start: yup.date().required('Transaction date is required'),
         transactionStatus: yup.string().required('Transaction status not yet')
     })
 

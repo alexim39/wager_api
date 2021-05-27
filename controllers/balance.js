@@ -31,7 +31,8 @@ module.exports = class BalanceClass  {
             return accountBalance
             
         } catch (error) {
-            return res.status(500).json({ msg: `Process failed`, code: 500 }); 
+            console.log(error)
+            //return error.error(error.name + ': ' + error.message)
         }
     }
 

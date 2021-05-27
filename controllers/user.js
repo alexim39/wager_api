@@ -20,11 +20,8 @@ module.exports = class User {
     static async getUsers(req, res) {
         try {
            const users = await UserModel.find({ });
-           if (!users) {
-               res.status(404).json({ msg: `No users found`, code: 404 });
-           } else {
-               res.status(200).json({ msg: `users found`, code: 200, obj: users });
-           }
+           if (!users) return res.status(404).json({ msg: `No users found`, code: 404 });
+           return res.status(200).json({ msg: `users found`, code: 200, obj: users });
         } catch (error) {
             return res.status(500).json({ msg: `User access process failed`, code: 500 });
         }
