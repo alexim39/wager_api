@@ -36,7 +36,7 @@ module.exports = class SignUp {
             // send activation email
             //const email = new EmailClass();
             //email.sendAccountActivationLink(user);
-            res.status(200).json({ msg: `Account created, check your email for activation link`, code: 200, obj: user });
+            return res.status(200).json({ msg: `Account created, check your email for activation link`, code: 200, obj: user });
             
   
         } catch (error) {

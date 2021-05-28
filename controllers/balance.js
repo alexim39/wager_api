@@ -1,5 +1,6 @@
 const { DepositModel } = require('../models/deposit');
 const { LayModel } = require('./../models/lay');
+const { WithdrawModel } = require('./../models/withdraw');
 
 module.exports = class BalanceClass  { 
 
@@ -10,11 +11,14 @@ module.exports = class BalanceClass  {
 
             const deposits = await DepositModel.find({userId: userId});
             const lays = await LayModel.find({userId: userId});
+            const withdraw = await WithdrawModel.find({userId: userId});
             if (!deposits) return 0;
             if (!lays) return 0;
+            if (!withdraw) return 0;
             
             let totalDeposits = 0;
             let totalLays = 0;
+            let totalWithdraws = 0;
 
             deposits.forEach((deposit) => {
                 totalDeposits = totalDeposits + deposit.amount
@@ -22,6 +26,10 @@ module.exports = class BalanceClass  {
 
             lays.forEach((lay) => {
                 totalLays = totalLays + lay.amount
+            })
+
+            withdraw.forEach((withdraw) => {
+                totalWithdraws = totalWithdraws + withdraw.amount
             })
 
             // init
@@ -33,7 +41,7 @@ module.exports = class BalanceClass  {
                 sumOfProfit  = sumOfProfit + profit;
             })
 
-            const accountBalance = (totalDeposits + sumOfProfit) - totalLays;
+            const accountBalance = (totalDeposits + sumOfProfit) - (totalLays + totalWithdraws);
             //console.log(totalDeposits)
             //console.log(totalLays)
             //console.log(accountBalance)

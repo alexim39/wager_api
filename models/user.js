@@ -41,17 +41,12 @@ exports.UserModel = new mongoose.model('User', new mongoose.Schema({
         default: Date.now
     },
     modifyDate: {
-        type: Date,
-        require: true,
-        default: Date.now
-    },
-    modifyDate: {
         type: Date
     },
-    jobTitle: {
+    bankName: {
         type: String
     },
-    organization: {
+    accountNo: {
         type: String
     },
     phone: {
@@ -62,7 +57,7 @@ exports.UserModel = new mongoose.model('User', new mongoose.Schema({
     },
 }));
 
-// export user validator
+// export user validator - sign up
 exports.SignUpValidator = (user) => {
     let schema = yup.object().shape({
         firstname: yup.string().required().min(3, 'First name should be a little descriptive').max(100, 'Name too long'),
@@ -79,7 +74,7 @@ exports.SignUpValidator = (user) => {
     });
 }
 
-// export yup validation
+// export yup validation - sign in
 exports.SignInValidator = (signinObj) => {
     let schema = yup.object().shape({
         password: yup.string().required().min(8, 'Password should be a minimum of 8 characters').max(50, 'Password is too long'),
@@ -87,6 +82,37 @@ exports.SignInValidator = (signinObj) => {
     })
 
     return schema.validate(signinObj).then(signinObj => signinObj).catch(error => {
+        return {
+            message: error.message
+        }
+    });
+}
+
+// export yup validation - profile update
+exports.ProfileUpdateValidator = (user) => {
+    let schema = yup.object().shape({
+        firstname: yup.string().required().min(3, 'First name should be a little descriptive').max(100, 'Name too long'),
+        lastname: yup.string().required().min(3, 'Last name should be a little descriptive').max(100, 'Name too long'),
+        phone: yup.string().required().min(11, 'Phone number is not valid').max(11, 'Phone number is not valid'),
+        email: yup.string().required().email('Email address is invalid'),
+        about: yup.string().min(2, 'Too little profile description').max(100, 'Too much profile description'),
+    })
+
+    return schema.validate(user).then(user => user).catch(error => {
+        return {
+            message: error.message
+        }
+    });
+}
+
+// export yup validation - bankd updadte
+exports.BankUpdateValidator = (bankObj) => {
+    let schema = yup.object().shape({
+        bankName: yup.string().required().min(2, 'Invalid bank name').max(50, 'Bank name too long'),
+        accountNo: yup.string().required().max(11, 'Bank account number is invalid'),
+    })
+
+    return schema.validate(bankObj).then(bankObj => bankObj).catch(error => {
         return {
             message: error.message
         }

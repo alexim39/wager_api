@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Lay = require('./../controllers/lay/lay');
-const verifyToken = require('../controllers/verify-user')
+const verifyToken = require('../controllers/verify-user');
 
 
 // save coinout deposit

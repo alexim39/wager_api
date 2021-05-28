@@ -17,7 +17,7 @@ module.exports = class Deposit extends DepositClass {
             //const decoded = jwt.verify(req.token, config.server.token);
             jwt.verify(req.token, config.server.token);
 
-            // check if deposit is within rage
+            // check if deposit is within range
             const depositClass = new DepositClass();
             if (depositClass.isOutOfDepositRange(req.body.amount)) return res.status(500).json({ msg: `Deposit amount is out of range`, code: 500 });
                 
