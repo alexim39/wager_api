@@ -7,6 +7,9 @@ const verifyToken = require('../controllers/verify-user')
 // save deposit
 router.post('/card', verifyToken, Deposit.card);
 
-// save deposit
+// get deposit balance
 router.get('/balance/:userId', verifyToken, Deposit.getBalance);
+
+// get deposits
+router.get('/:userId', verifyToken, Deposit.getDeposits);
 module.exports = router;

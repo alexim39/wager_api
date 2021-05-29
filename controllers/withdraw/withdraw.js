@@ -6,11 +6,9 @@ const Balance = require('./../balance');
 
 module.exports = class Withdraw extends WithdrawClass  {
 
-    // Create comment
+    // Create withdraw request
     static async create(req, res) {
         try {
-            
-
             jwt.verify(req.token, config.server.token);
 
             // validate inputs
@@ -34,10 +32,36 @@ module.exports = class Withdraw extends WithdrawClass  {
             return res.status(404).json({ msg: `Withdraw request failed`, code: 404 });
             
         } catch (error) {
-            console.log(error)
             return res.status(500).json({ msg: `Withdraw process failed`, code: 500 });
         }
+    }
 
+    // get all request
+    static async getAllRequest(req, res) {
+        try {
+           jwt.verify(req.token, config.server.token);
+
+           const withdraws = await WithdrawModel.find({userId: req.params.userId });
+           if (!withdraws) return res.status(404).json({ msg: `No withdraws found`, code: 404 });
+           return res.status(200).json({ msg: `Withdraws found`, code: 200, obj: withdraws });
+
+        } catch (error) {
+            return res.status(500).json({ msg: `Withdraw process failed`, code: 500 });
+        }
+    }
+
+    // cancel requst
+    static async cancel(req, res) {
+        try {
+           jwt.verify(req.token, config.server.token);
+
+           const withdraw = await WithdrawModel.findByIdAndDelete(req.params.withrawId);
+            if (withdraw) return res.status(200).json({ msg: `Withdraw request canceled`, code: 200, obj: withdraw });
+            return res.status(404).json({ msg: `This withraw request does not exist`, code: 404 });
+
+        } catch (error) {
+            return res.status(500).json({ msg: `Withdraw process failed`, code: 500 });
+        }
     }
 
 }

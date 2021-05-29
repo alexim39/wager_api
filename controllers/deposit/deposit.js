@@ -61,4 +61,19 @@ module.exports = class Deposit extends DepositClass {
         }
     }
 
+     // get deposits
+     static async getDeposits(req, res) {
+        try {
+            jwt.verify(req.token, config.server.token);
+
+            const deposits = await DepositModel.find({userId: req.params.userId});
+
+            if (!deposits) return res.status(404).json({ msg: `No deposit found`, code: 404 });
+            return res.status(200).json({ msg: `Deposit found`, code: 200, obj: deposits });
+            
+        } catch (error) {
+            return res.status(500).json({ msg: `Process failed`, code: 500 });
+        }
+    }
+
 }
