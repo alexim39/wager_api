@@ -34,6 +34,7 @@ app.use('/api/contact', require('./routes/contact'));
 app.use('/api/lay', require('./routes/lay'));
 app.use('/api/deposit', require('./routes/deposit'));
 app.use('/api/withdraw', require('./routes/withdraw'));
+app.use('/api/feedback', require('./routes/feedback'));
 
 // Connect to database
 mongoose.connect(`mongodb+srv://${config.server.username}:${config.server.password}@cluster0.dqc6b.mongodb.net/${config.server.database}?retryWrites=true&w=majority`, {
