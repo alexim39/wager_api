@@ -38,7 +38,7 @@ exports.DepositValidator = (depositObj) => {
         amount: yup.number().required('Amount is require'),
         transactionId: yup.number().required('Transaction ID is required'),
         transactionMethod: yup.string().required('Source of lay is required'),
-        transactionStatus: yup.string().required('Transaction status not yet'),
+        transactionStatus: yup.string(), //.required('Transaction status not set'),
         depositDate: yup.date().required('Transaction date is required').default(() => {
             return new Date();
         })
