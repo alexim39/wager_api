@@ -1,2 +1,0 @@
-{"name":"MongoNetworkError","level":"error","message":"error connect ETIMEDOUT 20.62.4.70:27017","stack":"Error: connect ETIMEDOUT 20.62.4.70:27017\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1133:16)"}
-{"name":"MongoNetworkError","level":"error","message":"error connect ETIMEDOUT 20.62.4.70:27017","stack":"Error: connect ETIMEDOUT 20.62.4.70:27017\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1133:16)"}
