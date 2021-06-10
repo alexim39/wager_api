@@ -2,6 +2,7 @@ const { UserModel } = require('./../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('./../config/config');
+const Notification = require('./notification');
 
 module.exports = class Password {
 
@@ -44,6 +45,19 @@ module.exports = class Password {
            foundUser.save();
 
            if (!foundUser) return res.status(404).json({ msg: `Error occured while changing password`, code: 404 });
+           // create notification
+           const NotificationClass = await new Notification();
+           const notificationPromise = NotificationClass.create({
+               userId: userId,
+               title: 'Password Change',
+               body: `Your password was changed successfully.`,
+               source: 'Password Process'
+           });
+           notificationPromise.then((notify) => {
+               if (notify) {
+                   //console.log('notification sent')
+               };
+           })
            return res.status(200).json({ msg: `Password changed successfully`, code: 200, obj: foundUser });
 
         } catch (error) {

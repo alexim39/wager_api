@@ -25,7 +25,6 @@ module.exports = class Contact {
         } catch (error) {
             return res.status(500).json({ msg: `Contact creation process failed`, code: 500 });
         }
-
     }
 
 }

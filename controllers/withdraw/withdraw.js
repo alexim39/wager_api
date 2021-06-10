@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../../config/config');
 const WithdrawClass = require('./withdraw.class');
 const Balance = require('./../balance');
+const Notification = require('./../notification');
 
 module.exports = class Withdraw extends WithdrawClass  {
 
@@ -28,7 +29,22 @@ module.exports = class Withdraw extends WithdrawClass  {
 
             const withdraw = await new WithdrawModel(req.body).save();
 
-            if (withdraw) return res.status(200).json({ msg: `Withdraw request placed successully `, code: 200, obj: withdraw });
+            if (withdraw) {
+                // create notification
+                const NotificationClass = await new Notification();
+                const notificationPromise = NotificationClass.create({
+                    userId: req.body.userId,
+                    title: 'Withdraw Request',
+                    body: `Your withdraw request of  N${req.body.amount} has been placed successfully, you will be notified once its completed.`,
+                    source: 'Withdraw Process'
+                });
+                notificationPromise.then((notify) => {
+                    if (notify) {
+                        //console.log('notification sent')
+                    };
+                })
+                return res.status(200).json({ msg: `Withdraw request placed successully `, code: 200, obj: withdraw });
+            }
             return res.status(404).json({ msg: `Withdraw request failed`, code: 404 });
             
         } catch (error) {

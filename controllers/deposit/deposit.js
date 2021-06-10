@@ -4,7 +4,7 @@ const config = require('../../config/config');
 const DepositClass = require('./deposit.class');
 const Balance = require('./../balance');
 const PayStack = require('paystack-node');
-
+const Notification = require('./../notification');
 
 module.exports = class Deposit extends DepositClass {
 
@@ -48,13 +48,47 @@ module.exports = class Deposit extends DepositClass {
                                 transactionStatus: "Success"
                             }).save();
                 
-                            if (deposit) return res.status(200).json({ msg: `Deposit successful`, code: 200, obj: response.body });
+                            if (deposit) {
+                                // create notification
+                                const NotificationClass = await new Notification();
+                                const notificationPromise = NotificationClass.create({
+                                    userId: req.params.userId,
+                                    title: 'Successful Deposit',
+                                    body: `Your deposit of  N${response.body.data.amount / 100} was successful`,
+                                    source: 'Deposit Process'
+                                });
+                                notificationPromise.then((notify) => {
+                                    if (notify) {
+                                        //console.log('notification sent')
+                                    };
+                                })
+                                return res.status(200).json({ msg: `Deposit successful`, code: 200, obj: response.body });
+                            }
 
                         } catch (error) {
                             console.error(error);
                         }
                     })();
                 } else {
+                    (async () => {
+                        try {
+                            // create notification
+                            const NotificationClass = await new Notification();
+                            const notificationPromise = NotificationClass.create({
+                                userId: req.params.userId,
+                                title: 'Failed Deposit',
+                                body: `Your deposit of  N${response.body.data.amount / 100} was not successful`,
+                                source: 'Deposit Process'
+                            });
+                            notificationPromise.then((notify) => {
+                                if (notify) { 
+                                    //console.log('notification sent')
+                                };
+                            })
+                        } catch (error) {
+                            console.error(error);
+                        }
+                    })();
                     return res.status(500).json({ msg: `Deposit was not successful`, code: 500, obj: response.body });
                 }
             }).catch( (error) => {
@@ -75,8 +109,8 @@ module.exports = class Deposit extends DepositClass {
             jwt.verify(req.token, config.server.token);
 
             const BalanceClass = new Balance()
-            const balance = BalanceClass.accountBalance(req.params.userId);
-            balance.then((amount) => {
+            const balancePromise = BalanceClass.accountBalance(req.params.userId);
+            balancePromise.then((amount) => {
                 if (amount === 0) return res.status(404).json({ msg: `No balance found`, code: 404 });
                 return res.status(200).json({ msg: `Balance found`, code: 200, obj: amount });
             })

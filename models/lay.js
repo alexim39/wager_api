@@ -3,9 +3,13 @@ const yup = require('yup');
 
 // exports model
 exports.LayModel = new mongoose.model('Lay', new mongoose.Schema({
-    userId: {
+   /*  userId: {
         type: String,
         required: true
+    }, */
+    userId: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User'
     },
     amount: {
         type: Number,

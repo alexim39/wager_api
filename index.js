@@ -36,12 +36,14 @@ app.use('/api/deposit', require('./routes/deposit'));
 app.use('/api/withdraw', require('./routes/withdraw'));
 app.use('/api/feedback', require('./routes/feedback'));
 app.use('/api/password', require('./routes/password'));
+app.use('/api/notification', require('./routes/notification'));
 
 // Connect to database
 mongoose.connect(`mongodb+srv://${config.server.username}:${config.server.password}@cluster0.dqc6b.mongodb.net/${config.server.database}?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 }).then(() => {
     logger.info(`info`, `Database connected`)
 }).catch((error) => {

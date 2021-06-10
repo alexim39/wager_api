@@ -4,9 +4,13 @@ const yup = require('yup');
 // exports model
 exports.WithdrawModel = new mongoose.model('Withdraw', new mongoose.Schema({
     userId: {
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User'
+    },
+    /* userId: {
         type: String,
         required: true
-    },
+    }, */
     amount: {
         type: Number,
         required: true
