@@ -5,6 +5,7 @@ module.exports = class Contact {
     // Create comment
     static async create(req, res) {
         try {
+
             // validate inputs
             const error = await ContactValidator(req.body);
             if (error.message) return res.status(400).send(error.message);
@@ -13,14 +14,11 @@ module.exports = class Contact {
                 names: req.body.names,
                 email: req.body.email,
                 phone: req.body.phone,
-                coments: req.body.coments,
+                comments: req.body.comments,
             }).save();
 
-            if (comment) {
-                res.status(200).json({ msg: `Contact sent, we will get back to you `, code: 200, obj: comment });
-            } else {
-                res.status(404).json({ msg: `Contact detail could not be sent`, code: 404 });
-            }
+            if (comment) return res.status(200).json({ msg: `Message sent, we will get back to you `, code: 200, obj: comment });
+             return res.status(404).json({ msg: `Message detail could not be sent`, code: 404 });
             
         } catch (error) {
             return res.status(500).json({ msg: `Contact creation process failed`, code: 500 });
