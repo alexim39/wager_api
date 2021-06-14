@@ -46,7 +46,7 @@ module.exports = class Password {
 
            if (!foundUser) return res.status(404).json({ msg: `Error occured while changing password`, code: 404 });
            // create notification
-           const NotificationClass = await new Notification();
+           const NotificationClass = new Notification();
            const notificationPromise = NotificationClass.create({
                userId: userId,
                title: 'Password Change',

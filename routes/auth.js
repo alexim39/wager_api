@@ -12,10 +12,10 @@ router.post('/signin', Signin.login)
 router.get('/signout', verifyToken, Signin.logout)
 // User change password
 //router.put('/password', Auth.create)
-//
-//router.put('/forgot-password', Auth.create)
-//
-//router.put('/new-password', Auth.create)
+// user forgot password
+router.put('/forgot-password', Signin.forgotPassword)
+// new password
+router.put('/new-password', Signin.createNewPassword)
 //
 //router.get('/activate/:userId', Auth.create)
 //
