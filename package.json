@@ -1,7 +1,7 @@
 {
-  "name": "kudutask_api",
+  "name": "Wager_api",
   "version": "1.0.0",
-  "description": "Backend API for KuduTask application",
+  "description": "Backend API for Wager.com.ng application",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
