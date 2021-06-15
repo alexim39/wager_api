@@ -9,7 +9,7 @@ const cors = require('cors');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: ['http://www.wager.com.ng', 'www.wager.com.ng', 'http://www.wager.com.ng', 'http://localhost:4200'],
+    origin: ['http://wager.com.ng', 'www.wager.com.ng', 'http://www.wager.com.ng', 'http://localhost:4200'],
     credentials: true
 }));
 
