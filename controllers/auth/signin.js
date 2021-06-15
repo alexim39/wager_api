@@ -42,11 +42,10 @@ module.exports = class SignIn {
             const user = await UserModel.findOne({ email: req.body.email });
             if (!user) return res.status(400).json({ msg: `This email does not exist in our system`, code: 400 });
             
+            // send password reset link email
             const EmailClass = new Email();
-            const sendLinkPromise = EmailClass.SendNewPasswordLink(user);
-            const isSendLink = await sendLinkPromise.then((status) => { return status });
+            EmailClass.SendNewPasswordLink(user);
 
-            //console.log(isSendLink)
 
             return res.status(200).json({ msg: `Password reset link have been sent to your email`, code: 200});
 
@@ -94,6 +93,11 @@ module.exports = class SignIn {
                    //console.log('notification sent')
                };
            })
+
+           // send password reset link email
+           const EmailClass = new Email();
+           EmailClass.SendPasswordChangeUpdate(foundUser);
+
            return res.status(200).json({ msg: `Password changed successfully`, code: 200, obj: foundUser });
              
         } catch (error) {

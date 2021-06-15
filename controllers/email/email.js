@@ -5,7 +5,7 @@ module.exports = class EmailClass {
   
   constructor() {}
 
-  async send(recipients, subject, body) {
+  send(recipients, subject, body) {
     let transporter = nodemailer.createTransport({
       host: 'mail.wager.com.ng', //"smtp.gmail.com",
       port: 587,
@@ -28,25 +28,25 @@ module.exports = class EmailClass {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log(error)
+        //console.log(error)
         return false;
       } else {
-        console.log(info)
+        //console.log(info)
         return true;
       }
     })
   }
 
-  async SendNewPasswordLink(user) {
+  SendNewPasswordLink(user) {
     // console.log(user)
 
     // send account activation mail
-    // http://kudutask.com/signup/${user._id}
+    // http://wager.com.ng/signup/${user._id}
     // http://localhost:4200/signup/${user._id}
 
     // email body
     const emailBody = `
-    <h1>New Password Link</h1>
+    <h2>New Password Link</h2>
     <p> Hi ${user.lastname},</p>
     <p>Kindly use the link below to change your account password</p>
     <br>
@@ -65,13 +65,34 @@ module.exports = class EmailClass {
     // init
     const emailClass = new EmailClass();
     // send email
-    const sendEmailPromise = await emailClass.send(user.email, 'Password Reset', emailBody);
-    const isEmailSent = await sendEmailPromise.then((status) => { return status });
+    const sendEmailPromise = emailClass.send(user.email, 'Password Reset Link', emailBody);
+    //const isEmailSent = await sendEmailPromise.then((status) => { return status });
 
-    //console.log(isEmailSent)
+    //console.log(sendEmailPromise)
 
     // check if email is sent
-    if (isEmailSent) {
+    if (sendEmailPromise) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  SendPasswordChangeUpdate(user) {
+
+    // email body
+    const emailBody = `
+    <h2>Password Reset Successful</h2>
+    <p> Hi ${user.lastname},</p>
+    <p>Your password have been successfully changed.</p>
+    <p>From Wager</p> `;
+
+    // init
+    const emailClass = new EmailClass();
+    // send email
+    const sendEmailPromise = emailClass.send(user.email, 'Password Reset', emailBody);
+    // check if email is sent
+    if (sendEmailPromise) {
       return true
     } else {
       return false
