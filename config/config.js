@@ -1,8 +1,8 @@
 require('dotenv').config();
 
 // SERVER
-const SERVER_HOSTNAME = process.env.SERVER_PORT || 'localhost';
-const SERVER_PORT = process.env.SERVER_PORT || 4201;
+const SERVER_HOSTNAME = 'localhost';
+const SERVER_PORT = process.env.PORT || 4201;
 const DB = process.env.DB;
 const DB_USER = process.env.DB_USER;
 const DB_PASS = process.env.DB_PASS;
