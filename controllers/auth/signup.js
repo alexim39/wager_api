@@ -1,6 +1,6 @@
 const { UserModel, SignUpValidator } = require('../../models/user');
 const bcrypt = require('bcryptjs');
-//const {EmailClass} = require('./../email/email')
+const Email = require('./../email/email');
 
 module.exports = class SignUp {
 
@@ -33,14 +33,63 @@ module.exports = class SignUp {
 
             if (!user) return res.status(404).json({ msg: `Account creation failed`, code: 404 });
 
-            // send activation email
-            //const email = new EmailClass();
-            //email.sendAccountActivationLink(user);
+            // send account activation email
+            const EmailClass = new Email();
+            EmailClass.SendAccountActivationLink(user);
             return res.status(200).json({ msg: `Account created, check your email for activation link`, code: 200, obj: user });
             
   
         } catch (error) {
             return res.status(500).json({ msg: `Sign up process failed`, code: 500 });
+        }
+    }
+
+    // User activate account
+    static async activateAccount(req, res) {
+        try {
+
+            // Check if email exist
+            const user = await UserModel.findById(req.params.userId);
+            if (!user) return res.status(404).json({ msg: `No account exist for this user`, code: 404 });
+
+            // check if account is ready activated
+            if (user.isActive) return res.status(502).json({ msg: `Activation failed - your account is already active`, code: 502});
+
+            user.isActive = true;
+            user.save();
+
+            if (!user) return res.status(404).json({ msg: `Error occured while activating account`, code: 404 });
+
+            // send account activation email
+            const EmailClass = new Email();
+            EmailClass.SendWelcomeMsg(user);
+            return res.status(200).json({ msg: `Account successfully activate`, code: 200, obj: user });
+             
+           
+        } catch (error) {
+            return res.status(500).json({ msg: `Account activation process failed`, code: 500 });
+        }
+    }
+
+    // resend account activation link
+    static async resendAcountActivationLink(req, res) {
+        try {
+
+            // Check if email exist
+            const user = await UserModel.findById(req.params.userId);
+            if (!user) return res.status(404).json({ msg: `No account exist for this user`, code: 404 });
+
+            // check if account is ready activated
+            if (user.isActive) return res.status(502).json({ msg: `Your account is already active`, code: 502});
+
+            // send account activation email
+            const EmailClass = new Email();
+            EmailClass.SendAccountActivationLink(user);
+            return res.status(200).json({ msg: `Account created, check your email for activation link`, code: 200, obj: user });
+             
+           
+        } catch (error) {
+            return res.status(500).json({ msg: `Account activation process failed`, code: 500 });
         }
     }
 }

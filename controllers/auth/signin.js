@@ -46,7 +46,6 @@ module.exports = class SignIn {
             const EmailClass = new Email();
             EmailClass.SendNewPasswordLink(user);
 
-
             return res.status(200).json({ msg: `Password reset link have been sent to your email`, code: 200});
 
             //if (isSendLink) return res.status(200).json({ msg: `Password reset link have been sent to your email`, code: 200});
@@ -67,7 +66,7 @@ module.exports = class SignIn {
                 return res.status(404).json({ msg: `Password should be at least 8 characters`, code: 404 });
             }
 
-             // Check if email exist
+            // Check if email exist
             const foundUser = await UserModel.findById(userId);
             if (!foundUser) return res.status(404).json({ msg: `No account exist for this user`, code: 404 });
 

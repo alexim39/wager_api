@@ -16,9 +16,9 @@ router.get('/signout', verifyToken, Signin.logout)
 router.put('/forgot-password', Signin.forgotPassword)
 // new password
 router.put('/new-password', Signin.createNewPassword)
-//
-//router.get('/activate/:userId', Auth.create)
-//
-//router.get('/activation-link/:userId', Auth.create)
+// account activation process
+router.get('/activate/:userId', Signup.activateAccount)
+// resend activation link
+router.get('/activation-link/:userId', Signup.resendAcountActivationLink)
 
 module.exports = router;
