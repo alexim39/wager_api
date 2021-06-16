@@ -50,7 +50,7 @@ module.exports = class EmailClass {
     <p> Hi ${user.lastname.toUpperCase()},</p>
     <p>Kindly use the link below to change your account password</p>
     <br>
-    <a href="http://wager.com.ng/new-password/${user._id}" target="_blank" 
+    <a href="http://wager.com.ng/#/new-password/${user._id}" target="_blank" 
         style="background-color: #1d2038; 
         color: white; 
         padding: 15px 32px;
@@ -108,7 +108,7 @@ module.exports = class EmailClass {
     <p> Hi ${user.lastname.toUpperCase()},</p>
     <p>Kindly use the link below to activate your account, as this will enable you get full access to all features in the platform</p>
     <br>
-    <a href="http://wager.com.ng/signup/${user._id}" target="_blank" 
+    <a href="http://wager.com.ng/#/signup/${user._id}" target="_blank" 
         style="background-color: #1d2038; 
         color: white; 
         padding: 15px 32px;
