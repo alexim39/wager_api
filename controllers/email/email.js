@@ -101,7 +101,6 @@ module.exports = class EmailClass {
 
 
   SendAccountActivationLink(user) {
-
     // email body
     const emailBody = `
     <h2>Welcome To Wager</h2>
@@ -133,7 +132,6 @@ module.exports = class EmailClass {
   }
 
   SendWelcomeMsg(user) {
-
     // email body
     const emailBody = `
     <h2>Welcome To Wager</h2>
@@ -146,6 +144,28 @@ module.exports = class EmailClass {
     const emailClass = new EmailClass();
     // send email
     const sendEmailPromise = emailClass.send(user.email, 'Account Activation', emailBody);
+    // check if email is sent
+    if (sendEmailPromise) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  NotifyAdminOfWithdrawRequest(userId, amount) {
+    // email body
+    const emailBody = `
+    <h3>Welcome To Wager</h3>
+    <p>Hi Admin,</p>
+    <p>Please note that a user with ID ${userId} just made a request for withdraw of N${amount}.</p>
+    <p>Kindly respond with 24 hours.</p>
+    <br>
+    <p>From Wager Withdraw Process</p> `;
+
+    // init
+    const emailClass = new EmailClass();
+    // send email
+    const sendEmailPromise = emailClass.send('schooltraz@gmail.com', 'User Withdraw Request', emailBody);
     // check if email is sent
     if (sendEmailPromise) {
       return true

@@ -4,6 +4,7 @@ const config = require('../../config/config');
 const WithdrawClass = require('./withdraw.class');
 const Balance = require('./../balance');
 const Notification = require('./../notification');
+const Email = require('./../email/email');
 
 module.exports = class Withdraw extends WithdrawClass  {
 
@@ -30,7 +31,7 @@ module.exports = class Withdraw extends WithdrawClass  {
             const withdraw = await new WithdrawModel(req.body).save();
 
             if (withdraw) {
-                // create notification
+                // create and send notification
                 const NotificationClass = await new Notification();
                 const notificationPromise = NotificationClass.create({
                     userId: req.body.userId,
@@ -43,6 +44,9 @@ module.exports = class Withdraw extends WithdrawClass  {
                         //console.log('notification sent')
                     };
                 })
+                // send notification email to admin
+                const EmailClass = new Email();
+                EmailClass.NotifyAdminOfWithdrawRequest(req.body.userId, req.body.amount);
                 return res.status(200).json({ msg: `Withdraw request placed successully `, code: 200, obj: withdraw });
             }
             return res.status(404).json({ msg: `Withdraw request failed`, code: 404 });
